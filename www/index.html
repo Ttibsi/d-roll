@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Droll dice roller</title>
+        <meta charset="utf-8" />
+		<style>
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	background-color: #ccc;
+}
+
+.buttons {
+	display: flex;
+	align-items: center;
+	height: 10%;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.buttons button {
+	flex: 1 0;
+	margin: 5px;
+	font-size: 1.75em;
+	padding: 0.5em 1em;
+	background-color: #8B572A;
+	color: white;
+	border: none;
+	border-radius: 0.25em;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+	background-color: #6E4311;
+}
+
+.display {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+}
+
+.display label {
+	font-size: 5em;
+	font-weight: bold;
+}
+
+.res_btn {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin: 1em;
+}
+
+.res_btn a {
+	font-size: 1.25em;
+	background-color: #8B572A;
+	color: white;
+	text-decoration: none;
+	border: none;
+	border-radius: 0.25em;
+	padding: 0.5em 1em;
+}
+
+.res_btn a:hover {
+	text-decoration: underline;
+}
+		</style>
+    </head>
+    <body>
+		<div class="buttons">
+			<form action="/" method="POST" name="dice_selection">
+				<button type="submit" name="value" value="20">20</button>
+				<button type="submit" name="value" value="12">12</button>
+				<button type="submit" name="value" value="10">10</button>
+				<button type="submit" name="value" value="8">8</button>
+				<button type="submit" name="value" value="4">4</button>
+				<button type="submit" name="value" value="100">100</button>
+			</form>
+		</div>
+		<div class="display">
+			<label class="name">{{.Roll_string}}</label>
+		</div>
+		<div class="res_btn">
+            <a href="/results">Previous Results</a>
+		</div>
+	</body>
+</html>
