@@ -13,18 +13,22 @@ body {
 	background-color: #ccc;
 }
 
+a, button {
+  font-family: sans-serif;
+}
+
 .buttons {
 	display: flex;
 	align-items: center;
 	height: 10%;
-	justify-content: space-evenly;
+	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
 }
 
 .buttons button {
-	flex: 1 0;
-	margin: 5px;
+	flex: 1 0 20%;
+	margin: 0.5em;
 	font-size: 1.75em;
 	padding: 0.5em 1em;
 	background-color: #8B572A;
@@ -35,8 +39,11 @@ body {
 	transition: background-color 0.3s ease;
 }
 
-.buttons button:hover {
+.buttons button:hover,
+.res_btn button:hover,
+.res_btn a:hover {
 	background-color: #6E4311;
+	text-decoration: underline;
 }
 
 .display {
@@ -46,49 +53,73 @@ body {
 	flex-grow: 1;
 }
 
-.display label {
+.display h1 {
 	font-size: 5em;
 	font-weight: bold;
+	text-align: center;
 }
 
 .res_btn {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	margin: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 .res_btn a {
-	font-size: 1.25em;
+	order: 1;
+	margin: 0.5em;
+	font-size: 1.75em;
+	padding: 0.5em 2em;
 	background-color: #8B572A;
 	color: white;
-	text-decoration: none;
 	border: none;
 	border-radius: 0.25em;
-	padding: 0.5em 1em;
+	text-decoration: none;
 }
 
-.res_btn a:hover {
-	text-decoration: underline;
+.res_btn form {
+	order: 2;
 }
+
+.res_btn button {
+	margin: 0.5em;
+	font-size: 1.75em;
+	padding: 0.5em 2em;
+	background-color: #8B572A;
+	color: white;
+	border: none;
+	border-radius: 0.25em;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
 		</style>
     </head>
     <body>
 		<div class="buttons">
 			<form action="/" method="POST" name="dice_selection">
-				<button type="submit" name="value" value="20">20</button>
-				<button type="submit" name="value" value="12">12</button>
-				<button type="submit" name="value" value="10">10</button>
-				<button type="submit" name="value" value="8">8</button>
-				<button type="submit" name="value" value="4">4</button>
-				<button type="submit" name="value" value="100">100</button>
+				<button type="submit" name="value" value="20">d20</button>
+				<button type="submit" name="value" value="12">d12</button>
+				<button type="submit" name="value" value="10">d10</button>
+				<button type="submit" name="value" value="8">d8</button>
+				<button type="submit" name="value" value="4">d4</button>
+				<button type="submit" name="value" value="100">d100</button>
 			</form>
 		</div>
 		<div class="display">
-			<label class="name">{{.Roll_string}}</label>
+			<h1 class="name">{{.Roll_string}}</h1>
 		</div>
-		<div class="res_btn">
-            <a href="/results">Previous Results</a>
-		</div>
+		<footer class="res_btn">
+			<a href="/results">Previous Results</a>
+			{{if len .Values}}
+				<form action="/" method="POST" class="submit_form">
+					<button type="submit" name="value" value="1">Roll!</button>
+				</form>
+			{{end}}
+		</footer>
 	</body>
 </html>
