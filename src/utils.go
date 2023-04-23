@@ -1,12 +1,14 @@
 package src
 
 import (
+	"database/sql"
 	"fmt"
-	"log"
 	"math/rand"
 	"strconv"
 	"strings"
 	"time"
+
+	// _ "github.com/mattn/go-sqlite3"
 )
 
 func rollDice(d *Dice) {
@@ -18,16 +20,30 @@ func rollDice(d *Dice) {
 		results = append(results, rand.Intn(val) + 1)
 	}
 
-	d.Roll_string = strings.Trim(fmt.Sprint(results), "[]")
+	d.Display = strings.Trim(fmt.Sprint(results), "[]")
 
 	for _, val := range results {
-		log.Printf("Val: %v, total: %v", val, total)
 		total += val
 	}
 
-	d.Roll_string += "<br>" //This works in html instead of a \n
-	d.Roll_string += "Result: "
-	d.Roll_string += strconv.Itoa(total)
+	d.Display += "<br>" //This works in html instead of a \n
+	d.Display += "Result: "
+	d.Display += strconv.Itoa(total)
 }
 
-func insertToDB() {}
+func insertToDB() error {
+	db, err := sql.Open("sqlite3", "./db.db")
+	if err != nil {
+		return err
+	}
+
+	stmt, err := db.Prepare("INSERT INTO results VALUES (NULL, ?, ?, ?);")
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(time.Now().Format("2006-01-02"), )
+
+	
+	return nil
+}

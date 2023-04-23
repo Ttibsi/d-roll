@@ -1,6 +1,7 @@
 package src
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 	"text/template"
@@ -11,6 +12,7 @@ import (
 
 type Dice struct {
 	Values []int
+	Display string
 	Roll_string string
 }
 
@@ -22,6 +24,7 @@ func (d *Dice) addToString(x int) {
 }
 
 func (d *Dice) homeHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("calling get")
 	tmpl, err := template.ParseFiles("www/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -42,27 +45,41 @@ func (d *Dice) homePostHandler(w http.ResponseWriter, r *http.Request) {
 	case 20:
 		d.Values = append(d.Values, 20)
 		d.addToString(20)
+		d.Display = d.Roll_string
 	case 12:
 		d.Values = append(d.Values, 12)
 		d.addToString(12)
+		d.Display = d.Roll_string
 	case 10:
 		d.Values = append(d.Values, 10)
 		d.addToString(10)
+		d.Display = d.Roll_string
 	case 8:
 		d.Values = append(d.Values, 8)
 		d.addToString(8)
+		d.Display = d.Roll_string
 	case 4:
 		d.Values = append(d.Values, 4)
 		d.addToString(4)
+		d.Display = d.Roll_string
 	case 100:
 		d.Values = append(d.Values, 100)
 		d.addToString(100)
+		d.Display = d.Roll_string
 	case 1: // Roll button pressed
 		rollDice(d)
-		insertToDB()
+		// insertToDB()
+		defer d.reset()
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (d *Dice) reset() {
+	log.Println("calling reset")
+	d.Display = ""
+	d.Values = d.Values[:0]
+	d.Roll_string = ""
 }
 
 func Serve() {
