@@ -11,9 +11,13 @@ import (
 )
 
 type Dice struct {
-	Values []int
-	Display string
+	Values      []int
+	Rolls       []int
+	Total       int
+	Display     string
 	Roll_string string
+	DbData      *[]DbRow
+	Toggle      bool
 }
 
 func (d *Dice) addToString(x int) {
@@ -21,6 +25,14 @@ func (d *Dice) addToString(x int) {
 		d.Roll_string += "+"
 	}
 	d.Roll_string += strconv.Itoa(x)
+}
+
+func (d *Dice) reset() {
+	log.Println("calling reset")
+	d.Display = ""
+	d.Values = d.Values[:0]
+	d.Roll_string = ""
+	d.Toggle = false
 }
 
 func (d *Dice) homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -35,6 +47,9 @@ func (d *Dice) homeHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+	if d.Toggle {
+		d.reset()
 	}
 }
 
@@ -68,27 +83,43 @@ func (d *Dice) homePostHandler(w http.ResponseWriter, r *http.Request) {
 		d.Display = d.Roll_string
 	case 1: // Roll button pressed
 		rollDice(d)
-		// insertToDB()
-		defer d.reset()
+		err := insertToDB(d)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		d.Toggle = true
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (d *Dice) reset() {
-	log.Println("calling reset")
-	d.Display = ""
-	d.Values = d.Values[:0]
-	d.Roll_string = ""
+func (d *Dice) resultsHandler(w http.ResponseWriter, r *http.Request) {
+	var err error
+	d.DbData, err = GetData()
+	if err != nil {
+		return
+	}
+
+	tmpl, err := template.ParseFiles("www/results.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.Execute(w, d)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	d := Dice{}
+	d := Dice{Toggle: false}
 
-    r.Get("/", d.homeHandler)
-    r.Post("/", d.homePostHandler)
-    // r.Get("/results", resultsHandler)
-    http.ListenAndServe(":3000", r)
+	r.Get("/", d.homeHandler)
+	r.Post("/", d.homePostHandler)
+	r.Get("/results", d.resultsHandler)
+	http.ListenAndServe(":3000", r)
 }

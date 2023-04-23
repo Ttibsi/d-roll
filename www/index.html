@@ -3,7 +3,7 @@
     <head>
         <title>Droll dice roller</title>
         <meta charset="utf-8" />
-		<style>
+        <style>
 body {
 	display: flex;
 	flex-direction: column;
@@ -97,29 +97,30 @@ a, button {
 	transition: background-color 0.3s ease;
 }
 
-		</style>
+
+        </style>
     </head>
     <body>
-		<div class="buttons">
-			<form action="/" method="POST" name="dice_selection">
-				<button type="submit" name="value" value="20">d20</button>
-				<button type="submit" name="value" value="12">d12</button>
-				<button type="submit" name="value" value="10">d10</button>
-				<button type="submit" name="value" value="8">d8</button>
-				<button type="submit" name="value" value="4">d4</button>
-				<button type="submit" name="value" value="100">d100</button>
-			</form>
-		</div>
-		<div class="display">
-			<h1 class="name">{{.Display}}</h1>
-		</div>
-		<footer class="res_btn">
-			<a href="/results">Previous Results</a>
-			{{if len .Values}}
-				<form action="/" method="POST" class="submit_form">
-					<button type="submit" name="value" value="1">Roll!</button>
-				</form>
-			{{end}}
-		</footer>
-	</body>
+        <div class="buttons">
+            <form action="/" method="POST" name="dice_selection">
+                <button type="submit" name="value" value="20">d20</button>
+                <button type="submit" name="value" value="12">d12</button>
+                <button type="submit" name="value" value="10">d10</button>
+                <button type="submit" name="value" value="8">d8</button>
+                <button type="submit" name="value" value="4">d4</button>
+                <button type="submit" name="value" value="100">d100</button>
+            </form>
+        </div>
+        <div class="display">
+            <h1 class="name">{{.Display}}</h1>
+        </div>
+        <footer class="res_btn">
+            <a href="/results">Previous Results</a>
+            {{if len .Values}}
+            <form action="/" method="POST" class="submit_form">
+                <button type="submit" name="value" value="1">Roll!</button>
+            </form>
+            {{end}}
+        </footer>
+    </body>
 </html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Droll dice roller</title>
+        <meta charset="utf-8" />
+        <style>
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	background-color: #ccc;
+}
+        </style>
+    </head>
+    <body>
+        <h1>Results</h1>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Roll</th>
+                <th>Total</th>
+            </tr>
+            {{range .DbData}}
+            <tr>
+                <td>{{.Date}}</td>
+                <td>{{.Roll}}</td>
+                <td>{{.Total}}</td>
+            </tr>
+            {{end}}
+        </table>
+    </body>
+</html>

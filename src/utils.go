@@ -7,31 +7,28 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
 	// _ "github.com/mattn/go-sqlite3"
 )
 
 func rollDice(d *Dice) {
-	var results []int
-	var total int
-    rand.Seed(time.Now().UnixNano())
+	rand.Seed(time.Now().UnixNano())
 
 	for _, val := range d.Values {
-		results = append(results, rand.Intn(val) + 1)
+		d.Rolls = append(d.Rolls, rand.Intn(val)+1)
 	}
 
-	d.Display = strings.Trim(fmt.Sprint(results), "[]")
+	d.Display = strings.Trim(fmt.Sprint(d.Rolls), "[]")
 
-	for _, val := range results {
-		total += val
+	for _, val := range d.Rolls {
+		d.Total += val
 	}
 
 	d.Display += "<br>" //This works in html instead of a \n
 	d.Display += "Result: "
-	d.Display += strconv.Itoa(total)
+	d.Display += strconv.Itoa(d.Total)
 }
 
-func insertToDB() error {
+func insertToDB(d *Dice) error {
 	db, err := sql.Open("sqlite3", "./db.db")
 	if err != nil {
 		return err
@@ -42,8 +39,14 @@ func insertToDB() error {
 		return err
 	}
 
-	_, err = stmt.Exec(time.Now().Format("2006-01-02"), )
+	_, err = stmt.Exec(
+		time.Now().Format("2006-01-02"),
+		d.Roll_string,
+		strconv.Itoa(d.Total),
+	)
+	if err != nil {
+		return err
+	}
 
-	
 	return nil
 }
