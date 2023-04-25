@@ -81,13 +81,15 @@ func (d *Dice) homePostHandler(w http.ResponseWriter, r *http.Request) {
 		d.Values = append(d.Values, 100)
 		d.addToString(100)
 		d.Display = d.Roll_string
-	case 1: // Roll button pressed
+	case -1: // Roll button pressed
 		rollDice(d)
 		err := insertToDB(d)
 		if err != nil {
 			log.Println(err.Error())
 		}
 		d.Toggle = true
+	case -2: // Reset
+		d.reset()
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -121,5 +123,5 @@ func Serve() {
 	r.Get("/", d.homeHandler)
 	r.Post("/", d.homePostHandler)
 	r.Get("/results", d.resultsHandler)
-	http.ListenAndServe(":3000", r)
+	log.Fatal(http.ListenAndServe(":3000", r))
 }

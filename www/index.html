@@ -11,10 +11,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: #ccc;
-}
-
-a, button {
-  font-family: sans-serif;
+    font-family: sans-serif;
 }
 
 .buttons {
@@ -118,7 +115,8 @@ a, button {
             <a href="/results">Previous Results</a>
             {{if len .Values}}
             <form action="/" method="POST" class="submit_form">
-                <button type="submit" name="value" value="1">Roll!</button>
+                <button type="submit" name="value" value="-2">Reset</button>
+                <button type="submit" name="value" value="-1">Roll!</button>
             </form>
             {{end}}
         </footer>
