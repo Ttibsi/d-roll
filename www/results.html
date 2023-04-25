@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Droll dice roller</title>
+        <meta charset="utf-8" />
+        <style>
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	background-color: #ccc;
+    font-family: sans-serif;
+}
+
+h1 {
+    padding: 0.1em 0.7em;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.25em;
+}
+
+th {
+  font-size: 1.33em;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+        </style>
+    </head>
+    <body>
+        <h1>Results</h1>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Roll</th>
+                <th>Total</th>
+            </tr>
+            {{range .DbData}}
+            <tr>
+                <td>{{.Date}}</td>
+                <td>{{.Roll}}</td>
+                <td>{{.Total}}</td>
+            </tr>
+            {{end}}
+        </table>
+    </body>
+</html>

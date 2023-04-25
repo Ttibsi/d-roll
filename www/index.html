@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Droll dice roller</title>
+        <meta charset="utf-8" />
+        <style>
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	background-color: #ccc;
+    font-family: sans-serif;
+}
+
+.buttons {
+	display: flex;
+	align-items: center;
+	height: 10%;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.buttons button {
+	flex: 1 0 20%;
+	margin: 0.5em;
+	font-size: 1.75em;
+	padding: 0.5em 1em;
+	background-color: #8B572A;
+	color: white;
+	border: none;
+	border-radius: 0.25em;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.buttons button:hover,
+.res_btn button:hover,
+.res_btn a:hover {
+	background-color: #6E4311;
+	text-decoration: underline;
+}
+
+.display {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+}
+
+.display h1 {
+	font-size: 5em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.res_btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.res_btn a {
+	order: 1;
+	margin: 0.5em;
+	font-size: 1.75em;
+	padding: 0.5em 2em;
+	background-color: #8B572A;
+	color: white;
+	border: none;
+	border-radius: 0.25em;
+	text-decoration: none;
+}
+
+.res_btn form {
+	order: 2;
+}
+
+.res_btn button {
+	margin: 0.5em;
+	font-size: 1.75em;
+	padding: 0.5em 2em;
+	background-color: #8B572A;
+	color: white;
+	border: none;
+	border-radius: 0.25em;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+
+        </style>
+    </head>
+    <body>
+        <div class="buttons">
+            <form action="/" method="POST" name="dice_selection">
+                <button type="submit" name="value" value="20">d20</button>
+                <button type="submit" name="value" value="12">d12</button>
+                <button type="submit" name="value" value="10">d10</button>
+                <button type="submit" name="value" value="8">d8</button>
+                <button type="submit" name="value" value="4">d4</button>
+                <button type="submit" name="value" value="100">d100</button>
+            </form>
+        </div>
+        <div class="display">
+            <h1 class="name">{{.Display}}</h1>
+        </div>
+        <footer class="res_btn">
+            <a href="/results">Previous Results</a>
+            {{if len .Values}}
+            <form action="/" method="POST" class="submit_form">
+                <button type="submit" name="value" value="-2">Reset</button>
+                <button type="submit" name="value" value="-1">Roll!</button>
+            </form>
+            {{end}}
+        </footer>
+    </body>
+</html>
