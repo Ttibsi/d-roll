@@ -27,16 +27,18 @@ func (d *Dice) addToString(x int) {
 	d.Roll_string += strconv.Itoa(x)
 }
 
-func (d *Dice) reset() {
-	log.Println("calling reset")
-	d.Display = ""
+func (d *Dice) reset(reset bool) {
 	d.Values = d.Values[:0]
+	d.Rolls = d.Rolls[:0]
 	d.Roll_string = ""
 	d.Toggle = false
+
+	if reset {
+		d.Display = ""
+	}
 }
 
 func (d *Dice) homeHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("calling get")
 	tmpl, err := template.ParseFiles("www/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -49,7 +51,7 @@ func (d *Dice) homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if d.Toggle {
-		d.reset()
+		d.reset(true)
 	}
 }
 
@@ -87,9 +89,9 @@ func (d *Dice) homePostHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Println(err.Error())
 		}
-		d.Toggle = true
+		d.reset(false)
 	case -2: // Reset
-		d.reset()
+		d.reset(true)
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
